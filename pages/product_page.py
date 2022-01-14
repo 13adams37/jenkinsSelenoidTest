@@ -26,3 +26,11 @@ class ProductPage(BasePage):
         alert_price = self.browser.find_element(*ProductPageLocators.PRODUCT_ALERT_PRICE).text
         assert product_price in card_price, "Цена товара не соответсвует цене в корзине!"
         assert product_price == alert_price, "Цена товара не соответсвует цене в алерте (корзине)"
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_be_disappeared_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is not disappeared, but should be"
