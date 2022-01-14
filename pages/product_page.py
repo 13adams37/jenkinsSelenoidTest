@@ -11,7 +11,8 @@ class ProductPage(BasePage):
     def AddProductToCart(self):
         # Добавить товар в корзину
         self.browser.find_element(*ProductPageLocators.PRODUCT_ADDTOCARTBUTTON).click()
-        self.solve_quiz_and_get_code()
+        # solve quiz пока не нужен
+        # self.solve_quiz_and_get_code()
 
     def ProductNameCheck(self):
         # Сравнение названия
