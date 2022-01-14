@@ -1,13 +1,11 @@
 from .pages.product_page import ProductPage
 from .pages.basket_page import BasketPage
 from .pages.login_page import LoginPage
-from .pages.base_page import BasePage
 import pytest
 import time
 
 
 @pytest.mark.UserBasket
-# class TestUserAddToBasketFromProductPage(ProductPage, LoginPage, BasePage):
 class TestUserAddToBasketFromProductPage:
     @pytest.fixture(scope="function", autouse=True)
     def setup(self, browser):
@@ -24,24 +22,26 @@ class TestUserAddToBasketFromProductPage:
         page.open()
         page.should_not_be_success_message()
 
+    @pytest.mark.need_review
     def test_user_can_add_product_to_basket(self, browser):
         link = f"http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
         page = ProductPage(browser, link)
         page.open()
-        page.ProductCheck()
+        page.AddProductToCart()
+        page.ProductNameCheck()
+        page.ProductPriceCheck()
 
 
-"""
 promos = [pytest.param(num, marks=pytest.mark.xfail(reason='bug')) if num == 7 else num for num in range(10)]
 
 
+@pytest.mark.need_review
 @pytest.mark.parametrize('promo_number', promos)
 def test_guest_can_add_product_to_basket(browser, promo_number):
     link = f"http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer{promo_number}"
     page = ProductPage(browser, link)
     page.open()
     page.ProductCheck()
-"""
 
 
 @pytest.mark.skip("На переделку")
@@ -84,6 +84,7 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.should_be_login_link()
 
 
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
@@ -91,6 +92,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page.go_to_login_page()
 
 
+@pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     # Гость открывает страницу товара
     # Переходит в корзину по кнопке в шапке
