@@ -4,6 +4,16 @@ from selenium.webdriver.chrome.options import Options as Chrome_Options
 from selenium.webdriver.firefox.options import Options as Firefox_Options
 
 
+chrome_capabilities = {
+    "browserName": "chrome",
+    "browserVersion": "100.0",
+    "selenoid:options": {
+        "enableVNC": True,
+        "enableVideo": False
+    }
+}
+
+
 def pytest_addoption(parser):
     parser.addoption('--browser_name', action='store', default="chrome",
                      help="Choose browser: chrome or firefox")
@@ -20,11 +30,9 @@ def browser(request):
     browser = None
     if browser_name == "chrome":
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': language})
-        # browser = webdriver.Chrome(options=chrome_options)
+        browser = webdriver.Chrome(options=chrome_options)
         browser = webdriver.Remote(command_executor='http://selenoid:4444/wd/hub',
-                                   desired_capabilities={'browserName': 'chrome',
-                                                         'version': '100.0'},
-                                   options=chrome_options)
+                                   desired_capabilities=chrome_capabilities)
     elif browser_name == "firefox":
         firefox_options.set_preference("intl.accept_languages", language)
         browser = webdriver.Firefox(options=firefox_options)
