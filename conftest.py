@@ -20,12 +20,16 @@ def browser(request):
     browser = None
     if browser_name == "chrome":
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': language})
-        browser = webdriver.Chrome(options=chrome_options)
+        # browser = webdriver.Chrome(options=chrome_options)
+        browser = webdriver.Remote(command_executor='http://selenoid:4444/wd/hub',
+                                   desired_capabilities={'browserName': 'chrome',
+                                                         'version': '100.0'},
+                                   options=chrome_options)
     elif browser_name == "firefox":
         firefox_options.set_preference("intl.accept_languages", language)
         browser = webdriver.Firefox(options=firefox_options)
-
     else:
         raise pytest.UsageError("--browser_name should be 'chrome' or 'firefox'")
+    browser.maximize_window()
     yield browser
     browser.quit()
