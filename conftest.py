@@ -36,12 +36,13 @@ def browser(request):
         capabilities['browserVersion'] = '99.0'
         capabilities['selenoid:options'] = {"enableVNC": True, "enableVideo": False}
 
+        # seleniumIntegrated
         browser = webdriver.Chrome(options=chrome_options)
 
         # selenoidRemote
-        # browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
-        #                            desired_capabilities=capabilities,
-        #                            options=chrome_options)
+        browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
+                                   desired_capabilities=capabilities,
+                                   options=chrome_options)
 
         # browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
         #                            options=chrome_options)
