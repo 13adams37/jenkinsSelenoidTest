@@ -31,12 +31,12 @@ def browser(request):
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': language})
 
         # seleniumIntegrated
-        browser = webdriver.Chrome(options=chrome_options)
+        # browser = webdriver.Chrome(options=chrome_options)
 
         # selenoidRemote
-        # browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
-        #                            desired_capabilities=chrome_capabilities,
-        #                            options=chrome_options)
+        browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
+                                   desired_capabilities=chrome_capabilities,
+                                   options=chrome_options)
     elif browser_name == "firefox":
         firefox_options.set_preference("intl.accept_languages", language)
         browser = webdriver.Firefox(options=firefox_options)
