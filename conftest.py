@@ -2,11 +2,11 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as Chrome_Options
 from selenium.webdriver.firefox.options import Options as Firefox_Options
-
+from selenium.webdriver import DesiredCapabilities
 
 chrome_capabilities = {
     "browserName": "chrome",
-    "browserVersion": "100.0",
+    "browserVersion": "99.0",
     "selenoid:options": {
         "enableVNC": True,
         "enableVideo": False
@@ -30,9 +30,21 @@ def browser(request):
     browser = None
     if browser_name == "chrome":
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': language})
+
+        capabilities = DesiredCapabilities.CHROME.copy()
+        capabilities['browserName'] = 'chrome'
+        capabilities['browserVersion'] = '99.0'
+        capabilities['selenoid:options'] = {"enableVNC": True, "enableVideo": False}
+
         browser = webdriver.Chrome(options=chrome_options)
-        browser = webdriver.Remote(command_executor='http://selenoid:4444/wd/hub',
-                                   desired_capabilities=chrome_capabilities)
+
+        # selenoidRemote
+        # browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
+        #                            desired_capabilities=capabilities,
+        #                            options=chrome_options)
+
+        # browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
+        #                            options=chrome_options)
     elif browser_name == "firefox":
         firefox_options.set_preference("intl.accept_languages", language)
         browser = webdriver.Firefox(options=firefox_options)
