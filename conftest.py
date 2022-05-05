@@ -34,7 +34,7 @@ def browser(request):
         # browser = webdriver.Chrome(options=chrome_options)
 
         # selenoidRemote
-        browser = webdriver.Remote(command_executor='http://localhost:4444/wd/hub',
+        browser = webdriver.Remote(command_executor='http://selenoid:4444/wd/hub',
                                    desired_capabilities=chrome_capabilities,
                                    options=chrome_options)
     elif browser_name == "firefox":
