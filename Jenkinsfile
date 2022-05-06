@@ -21,12 +21,10 @@ pipeline {
      }
     stage('Run tests') {
         steps {
-           catchError {
-              script {
-					docker.image('python-web-tests').inside("--link selenoid") {
-                    	sh "pytest ${CMD_PARAMS}"
-                	    }
-        	     }
+            catchError {
+            script {
+				docker.image('python-web-tests').inside("--link selenoid") { sh "pytest ${CMD_PARAMS}" }
+        	}
       	    }
          }
      }
