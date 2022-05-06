@@ -19,17 +19,24 @@ pipeline {
            }
         }
      }
-     stage('Run tests') {
+     stage('Run python env') {
         steps {
            catchError {
               script {
-              	docker.image('python-web-tests').inside("--link ${c.id}:selenoid") {
-                    	sh "pytest ${CMD_PARAMS}" 
-						}
+              	docker.image('python-web-tests').inside("--link ${c.id}:selenoid")
 				}
       	    }
          }
      }
+     stage('Pull browser') {
+        steps {
+           catchError {
+            script {
+				sh "pytest ${CMD_PARAMS}" 
+      	    }
+           }
+        }
+     }	 
      stage('Reports') {
         steps {
            allure([
