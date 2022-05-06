@@ -28,7 +28,7 @@ pipeline {
       	    }
          }
      }
-     stage('Pull browser') {
+     stage('Start pytest') {
         steps {
            catchError {
             script {
