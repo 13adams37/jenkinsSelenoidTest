@@ -23,7 +23,7 @@ pipeline {
         steps {
            catchError {
               script {
-          	     docker.container('selenoid') { c ->
+          	     docker.container('selenoid').start() { c ->
 					docker.image('python-web-tests').inside("--link ${c.id}:selenoid") {
                     	sh "pytest -n 2 --reruns 1 ${CMD_PARAMS}"
                 	    }
