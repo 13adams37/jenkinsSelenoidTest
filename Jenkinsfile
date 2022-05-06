@@ -12,31 +12,26 @@ pipeline {
     }
      stage('Pull browser') {
         steps {
-           catchError {
-              script {
-      	    docker.image('selenoid/chrome:99.0')
+            catchError {
+            script {
+				docker.image('selenoid/chrome:99.0')
       	      }
            }
         }
      }
-     stage('Run python env') {
+    stage('Run tests') {
         steps {
            catchError {
               script {
-              	docker.image('python-web-tests').inside("--link ${c.id}:selenoid")
-				}
+          	     docker.image('aerokube/selenoid') { c ->
+					docker.image('python-web-tests').inside("--link ${c.id}:selenoid") {
+                    	sh "pytest -n 2 --reruns 1 ${CMD_PARAMS}"
+                	    }
+                   }
+        	     }
       	    }
          }
      }
-     stage('Start pytest') {
-        steps {
-           catchError {
-            script {
-				sh "pytest ${CMD_PARAMS}" 
-      	    }
-           }
-        }
-     }	 
      stage('Reports') {
         steps {
            allure([
