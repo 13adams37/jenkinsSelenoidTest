@@ -27,7 +27,8 @@ pipeline {
               	docker.image('python-web-tests').inside("--link ${c.id}:selenoid") {
                     	sh "pytest ${CMD_PARAMS}" 
 						}
-        	     }
+        	    }
+				}
       	    }
          }
      }
