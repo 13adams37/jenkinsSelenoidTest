@@ -23,7 +23,7 @@ pipeline {
         steps {
            catchError {
               script {
-          	    docker.image('aerokube/selenoid').withRun('-p 4444:4444 -v /run/docker.sock:/var/run/docker.sock -v /etc/selenoid/browsers.json -timeout 600s -limit 2') { c ->
+          	    docker.image('aerokube/selenoid').withRun('-p 4444:4444 -v /run/docker.sock:/var/run/docker.sock -v /etc/selenoid') { c ->
               	docker.image('python-web-tests').inside("--link selenoid") {
                     	sh "pytest ${CMD_PARAMS}"
                 	    }
