@@ -19,7 +19,7 @@ pipeline {
            }
         }
      }
-	stage('Setting the variables values') {
+	stage('Run tests') {
 		steps {
 			 sh '''#!/bin/bash
 					docker run -d -t --link selenoid python-web-tests cmd.exe
