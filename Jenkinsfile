@@ -12,20 +12,27 @@ pipeline {
     }
      stage('Pull browser') {
         steps {
-            catchError {
-            script {
-				docker.image('selenoid/chrome:99.0')
+           catchError {
+              script {
+      	    docker.image('selenoid/chrome:99.0')
       	      }
            }
         }
      }
-	stage('Run tests') {
-		steps {
-			 sh '''#!/bin/bash
-					docker run -d -t --link selenoid python-web-tests cmd.exe
-			 '''
-		}
-	}
+     stage('Run tests') {
+        steps {
+           catchError {
+              script {
+          	     docker.image('aerokube/selenoid:1.10.7').withRun('-p 4444:4444 -v /run/docker.sock:/var/run/docker.sock -v /etc/selenoid/browsers.json',
+            	'-timeout 600s -limit 2') { c ->
+              	docker.image('python-web-tests').inside("--link ${c.id}:selenoid") {
+                    	sh "pytest ${CMD_PARAMS}"
+                	    }
+                   }
+        	     }
+      	    }
+         }
+     }
      stage('Reports') {
         steps {
            allure([
