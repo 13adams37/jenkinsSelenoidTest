@@ -19,15 +19,13 @@ pipeline {
            }
         }
      }
-    stage('Run tests') {
-        steps {
-            catchError {
-            script {
-				docker.image('python-web-tests').inside("--link selenoid") { sh "pytest ${CMD_PARAMS}" }
-        	}
-      	    }
-         }
-     }
+	stage('Setting the variables values') {
+		steps {
+			 sh '''#!/bin/bash
+					docker run -d -t --link selenoid python-web-tests cmd.exe
+			 '''
+		}
+	}
      stage('Reports') {
         steps {
            allure([
